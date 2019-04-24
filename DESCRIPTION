@@ -1,0 +1,20 @@
+Package: bagea
+Title: implements the bagea algorithm
+Version: 0.0.0.9000
+Authors@R: person("David", "Lamparter", email = "lamparterd@gmail.com", role = c("aut", "cre"))
+Description: Implements bagea (bayesian annotation guided eQTL analysis), which allows to fit eQTL data to directed and undirected genomic annotations. 
+Depends:
+    R (>= 3.2.1)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp
