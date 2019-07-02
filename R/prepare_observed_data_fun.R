@@ -214,6 +214,7 @@ get_settingsout_list_obs=function(BAGEA_ANNOTATION_MAT,ANNOTATION_LIST,ANNOTATIO
 	settings[["MAF_CUTOFF"]]=MAF_CUTOFF
 	settings[["RANGE_AROUND_TSS"]]=RANGE_AROUND_TSS
 	settings[["VARIANCE_PERCENTAGE2KEEP"]]=VARIANCE_PERCENTAGE2KEEP
+	settings[["HYPER_PARAM_LIST"]]=HYPER_PARAM_LIST
 	settings[["CHR"]]=CHR
 	settings[["KEEP_X_y"]]=KEEP_X_y
 	settings[["NCORES"]]=NCORES
@@ -1095,6 +1096,7 @@ process_gene_not1KG=function(i,
 #' For instance, if GENOTYPE_BASE_FILE_PATHS is \preformatted{~/dosages/mygenotypes_chr,} GENOTYPE_FILE_PATHS_GZ is set to FALSE, then the function looks for 22 files of the format \preformatted{~/dosages/mygenotypes_chr1.txt} to \preformatted{~/dosages/mygenotypes_chr22.txt.} If GENOTYPE_FILE_PATHS_GZ is set to TRUE, the function will look for \preformatted{~/dosages/mygenotypes_chr22.txt.gz} etc instead.
 #' All dosage files need to be numeric tab-separated tables (no NAs allowed), except the first column and row. The first row gives the column names, which are sample ids except for the first. The first column should be named 'snpid ' and should contain snp ids in rs numbers. All other column should contain a individuals' SNP dosages.
 #' If multiple batches are combined in the analysis,then GENOTYPE_BASE_FILE_PATHS, GENOTYPE_FILE_PATHS_GZ,EXPRESSION_FILE_PATHS should be given as vectors, where element i in the vector is the respective parameter setting for the i-th batch and formatting follows the same rules as for one batch. 
+#' To simmulate according to a model with a particular hyper-parameter setting, set HYPER_PARAM_LIST to an object of class bagea_hyperparameter_list (produced by set_hyperparameter_list), and set EXPRESSION_FILE_PATHS to NULL.
 #' @export
 prepare_observed_data=function(BAGEA_ANNOTATION_MAT=NULL,ANNOTATION_LIST=colnames(BAGEA_ANNOTATION_MAT$annotation_mat),ANNOTATION_SHIFT_LIST=colnames(BAGEA_ANNOTATION_MAT$annotation_shift_mat),GENOTYPE_BASE_FILE_PATHS=NULL,GENOTYPE_FILE_PATHS_GZ=rep(FALSE,length(GENOTYPE_BASE_FILE_PATHS)),EXPRESSION_FILE_PATHS=NULL,VARIANCE_PERCENTAGE2KEEP=100,RANGE_AROUND_TSS=1.5e5,MAF_CUTOFF=0.05,HYPER_PARAM_LIST=NULL,CHR=c(1:22),KEEP_X_y=FALSE,NCORES=1,SNPS2KEEP=NULL,ADD_SNP_FREQS2ANNOT=FALSE,SINGLESNP_MINPVALUE_CUTOFF=1,ANNOTATION_SHIFTWEIGHT_LIST=colnames(BAGEA_ANNOTATION_MAT$annotation_mat),GENOTYPE_PC_LIST=NULL,NPCS=10,SHIFT_METAINFO_TBL){
 	###
@@ -1177,7 +1179,7 @@ prepare_observed_data=function(BAGEA_ANNOTATION_MAT=NULL,ANNOTATION_LIST=colname
 	obs_out=list()
 	obs_out[["obs_list"]]=obs_list
 	obs_out[["settings"]]=settings
-	obs_out[["simulation_unobs_list"]]=HYPER_PARAM_LIST
+	obs_out[["simulation_unobs_list"]]=simulated_params
 	obs_out[["removed_snps"]]=all_removed_snps_list
 	if(!is.null(SHIFT_METAINFO_TBL)){
 		obs_out[["D_mat"]]=D_mat

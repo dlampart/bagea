@@ -635,9 +635,7 @@ my_caught_svd=function(X){
 #' scalar between 10'000 and 500'000. 
 #' Window around transcription start site for which snps are considered.
 #' @param MAF_CUTOFF
-#' Scalar. SNPs with observed maf below or at MAF_CUTOFF will be ignored. has to be between 0 and 0.5. If multiple genotype batchtes are combined, the cutoff is transformed into a variance cutoff assuming hardy-weinberge equilibrium and applied to the combined dataset after mean removal of each batch.  
-#' @param HYPER_PARAM_LIST
-#' An object of class bagea_hyperparameter_list (produced by set_hyperparameter_list).
+#' Scalar. SNPs with observed maf below or at MAF_CUTOFF will be ignored. has to be between 0 and 0.5. If multiple genotype batchtes are combined, the cutoff is transformed into a variance cutoff assuming hardy-weinberge equilibrium and applied to the combined dataset after mean removal of each batch.
 #' @param CHR: 
 #' A vector of unique integer numbers between 1 and 22. Gives of chromosome to process. Default is c(1:22) 
 #' @param NCORES
@@ -670,7 +668,6 @@ prepare_observed_1KG_data=function(
 	ANNOTATION_SHIFT_LIST=colnames(BAGEA_ANNOTATION_MAT$annotation_shift_mat),
 	ANNOTATION_SHIFTWEIGHT_LIST=colnames(BAGEA_ANNOTATION_MAT$annotation_mat),
 	MAF_CUTOFF=0.05,
-	HYPER_PARAM_LIST=NULL,
 	CHR=c(1:22),
 	NCORES=1,
 	SNPS2KEEP=NULL,
@@ -679,11 +676,9 @@ prepare_observed_1KG_data=function(
 	SHIFT_METAINFO_TBL
 	){
 	###########################
-	### assemble settings obj
+	### set params
 	###########################
-	###########################
-	### END: assemble settings obj
-	###########################
+	HYPER_PARAM_LIST=NULL
 	if(is.null(GENOTYPE_BASE_FILE_PATHS)){
 		BAGEA_PATH=Sys.getenv("BAGEA_PATH")
 		if(BAGEA_PATH==""){
