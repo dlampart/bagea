@@ -58,7 +58,7 @@ pull_out_dat=function(mpicl,update_out_list,traces_l,index_range_mappings,gene_n
 	return(out_dat_list)
 }
 
-update_params=function(i,mpicl,Eu_ak_old,global_E_list,mysettings,theta_root_list,global_theta_star_list,mapping_mat_ak_nonnull_element_list,hyperparameter_list,mapping_mat_expanded_ak,theta_alphai_vect_first_row,D_mat,theta_alphai_ak_first_col,Eu_gammai_vect){
+update_params=function(i,mpicl,Eu_ak_old,global_E_list,mysettings,theta_root_list,global_theta_star_list,mapping_mat_ak_nonnull_element_list,hyperparameter_list,mapping_mat_expanded_ak,theta_alphai_vect_first_row,D_mat,theta_alphai_ak_first_col,Eu_gammai_vect,nu_names){
 	gamma1=hyperparameter_list$gamma1
 	chi1_vec=hyperparameter_list$chi1_vec
 	if(is.null(chi1_vec)){
@@ -961,7 +961,8 @@ run_bagea=function(gene_dat_list=NULL,hyperparameter_list=NULL,calc_L=TRUE,ncore
 			theta_alphai_vect_first_row=constant_theta_first_cols_l$theta_alphai_vect_first_col,
 			D_mat=D_mat,
 			theta_alphai_ak_first_col=constant_theta_first_cols_l$theta_alphai_ak_first_col,
-			Eu_gammai_vect=Eu_gammai_vect)
+			Eu_gammai_vect=Eu_gammai_vect,
+			nu_names=nu_names)
 		Eu_ak_old=outl[["Eu_ak_old"]]
 		Eu_gammai_vect=outl[["Eu_gammai_vect"]]
 		global_E_list=outl[["global_E_list"]]		

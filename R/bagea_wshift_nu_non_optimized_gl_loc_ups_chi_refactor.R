@@ -274,7 +274,7 @@ get_settingsout_list_bagea=function(gene_dat_list_settings,hyperparameter_list,c
 	return(mysettings)
 }
 
-update_Eu_alphai=function(gene_dat_list,Eu_ak,ak_matcher,hyperparameter_list,Eu_omega_list,Eu_nu_list){
+update_Eu_alphai=function(gene_dat_list,Eu_ak,ak_matcher,hyperparameter_list,Eu_omega_list,Eu_nu_list,nu_names){
 	###########################
 	## update Eu_alphai
 	###########################	
@@ -371,7 +371,7 @@ update_Eu_kappai=function(i,gene_dat_list,Eu_tau2,hyperparameter_list,ak_matcher
 
 
 
-update_Eu_bj_Eu_lambdaj=function(gene_dat_list,Eu_lambda2,lambda1,approximation_mode,Eu_omega_list,Eu_nu_list){
+update_Eu_bj_Eu_lambdaj=function(gene_dat_list,Eu_lambda2,lambda1,approximation_mode,Eu_omega_list,Eu_nu_list,nu_names){
 		###########################
 		## update Eu_bj,Eu_lambdaj
 		###########################
@@ -501,7 +501,7 @@ reassemble_XtX=function(gene_dat_list){
 	return(gene_dat_list)
 }
 
-run_globalE_list=function(i,L_global_list,global_E_list,gene_dat_list,ak_matcher,hyperparameter_list,approximation_mode,lambda1,D_mat,theta_root_list){
+run_globalE_list=function(i,L_global_list,global_E_list,gene_dat_list,ak_matcher,hyperparameter_list,approximation_mode,lambda1,D_mat,theta_root_list,nu_names){
 	theta_ak=theta_root_list$theta_ak
 	theta_lambda2=theta_root_list$theta_lambda2
 	theta_tau2=theta_root_list$theta_tau2
@@ -557,14 +557,15 @@ run_globalE_list=function(i,L_global_list,global_E_list,gene_dat_list,ak_matcher
 	ssvec[3]=aa
 	print(aa)
 	print("update Eu_nu_list")
-	outl=update_Eu_nu_list(gene_dat_list=gene_dat_list,L_global_list=L_global_list,Eu_omega_list=Eu_omega_list,hyperparameter_list=hyperparameter_list)
+	outl=update_Eu_nu_list(gene_dat_list=gene_dat_list,L_global_list=L_global_list,Eu_omega_list=Eu_omega_list,hyperparameter_list=hyperparameter_list,nu_names=nu_names)
 	L_global_list=outl[["L_global_list"]]
 	Eu_nu_list=outl[["Eu_nu_list"]]
 	gene_dat_list=outl[["gene_dat_list"]]
 	###########################
 	## update Eu_omega_list
 	###########################
-	outl=update_Eu_omega_list(gene_dat_list=gene_dat_list,L_global_list=L_global_list,hyperparameter_list=hyperparameter_list,Eu_nu_list=Eu_nu_list,Eu_upsilon_list=Eu_upsilon_list,D_mat=D_mat)
+	print("update Eu_omega_list")
+	outl=update_Eu_omega_list(gene_dat_list=gene_dat_list,L_global_list=L_global_list,hyperparameter_list=hyperparameter_list,Eu_nu_list=Eu_nu_list,Eu_upsilon_list=Eu_upsilon_list,D_mat=D_mat,nu_names=nu_names)
 	L_global_list=outl[["L_global_list"]]
 	Eu_omega_list=outl[["Eu_omega_list"]]
 	gene_dat_list=outl[["gene_dat_list"]]	
@@ -659,7 +660,7 @@ update_Eu_ak=function(theta_ak,gene_dat_list,Eu_ak,hyperparameter_list,L_global_
 }
 
 
-update_Eu_nu_list=function(gene_dat_list,L_global_list=L_global_list,Eu_omega_list,hyperparameter_list){
+update_Eu_nu_list=function(gene_dat_list,L_global_list=L_global_list,Eu_omega_list,hyperparameter_list,nu_names){
 	theta_b_nu_l=list()
 	for(j in c(1:length(gene_dat_list))){
 		cur_e=gene_dat_list[[j]]$E_list
@@ -704,7 +705,7 @@ update_Eu_nu_list=function(gene_dat_list,L_global_list=L_global_list,Eu_omega_li
 }
 
 
-update_Eu_omega_list=function(gene_dat_list,L_global_list=L_global_list,Eu_nu_list,hyperparameter_list,Eu_upsilon_list,D_mat){
+update_Eu_omega_list=function(gene_dat_list,L_global_list=L_global_list,Eu_nu_list,hyperparameter_list,Eu_upsilon_list,D_mat,nu_names){
 	theta_b_omega_l=list()
 	for(j in c(1:length(gene_dat_list))){
 		cur_e=gene_dat_list[[j]]$E_list
@@ -986,7 +987,7 @@ run_bagea_nonoptimized=function(gene_dat_list=NULL,hyperparameter_list=NULL,calc
 		print(Sys.time())
 		print("round")
 		print(i)
-		gene_dat_list=update_Eu_bj_Eu_lambdaj(gene_dat_list,global_E_list$Eu_lambda2,lambda1,approximation_mode,Eu_omega_list=global_E_list$Eu_omega_list,Eu_nu_list=global_E_list$Eu_nu_list)
+		gene_dat_list=update_Eu_bj_Eu_lambdaj(gene_dat_list,global_E_list$Eu_lambda2,lambda1,approximation_mode,Eu_omega_list=global_E_list$Eu_omega_list,Eu_nu_list=global_E_list$Eu_nu_list,nu_names=nu_names)
 		print("ss L")
 		aa=get_global_L_sum(L_global_list)+get_local_L_sum(gene_dat_list)
 		ssMat[i,1]=aa
@@ -1001,13 +1002,14 @@ run_bagea_nonoptimized=function(gene_dat_list=NULL,hyperparameter_list=NULL,calc
 			ak_matcher=ak_matcher,
 			hyperparameter_list=hyperparameter_list,
 			Eu_omega_list=global_E_list$Eu_omega_list,
-			Eu_nu_list=global_E_list$Eu_nu_list)
+			Eu_nu_list=global_E_list$Eu_nu_list,
+			nu_names=nu_names)
 		print("ss3 L")
 		aa=get_global_L_sum(L_global_list)+get_local_L_sum(gene_dat_list)
 		ssMat[i,3]=aa
 		print(aa)
 		###########################
-		global_ret=run_globalE_list(i=i,L_global_list=L_global_list,global_E_list,gene_dat_list,ak_matcher=ak_matcher,hyperparameter_list=hyperparameter_list,approximation_mode=approximation_mode,lambda1=lambda1,D_mat=D_mat,theta_root_list=theta_root_list)
+		global_ret=run_globalE_list(i=i,L_global_list=L_global_list,global_E_list,gene_dat_list,ak_matcher=ak_matcher,hyperparameter_list=hyperparameter_list,approximation_mode=approximation_mode,lambda1=lambda1,D_mat=D_mat,theta_root_list=theta_root_list,nu_names)
 		L_global_list=global_ret$L_global_list
 		global_E_list=global_ret$global_E_list
 		gene_dat_list=global_ret$gene_dat_list
