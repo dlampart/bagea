@@ -152,8 +152,15 @@ get_XtX=function(x){
 #' An R-object of class bagea_observed_data, producted for instance by \code{\link{prepare_observed_data}}
 #' @param bagea_result
 #' An R-object of class \code{bagea_output}, producted by \code{\link{run_bagea}}
+#' @param use_simulated
+#' Boolean. Should the simulated parameters be used directly? 
 #' @export
-predict_directed_fast=function(observed_data,bagea_result){
+predict_directed_fast=function(observed_data,bagea_result,use_simulated=FALSE){
+	if(use_simulated){
+		if(is.null(observed_data$simulation_unobs_list)){
+			stop("err13easa:if use_simulated is true, observed_data has to be simulated.")
+		}
+	}
 	calc_eta=function(F,nu,V,omega){
 		eta = (V%*%omega)*(F%*%nu)
 	}
@@ -173,6 +180,11 @@ predict_directed_fast=function(observed_data,bagea_result){
 	get_results_params=function(bagea_result){
 		omega1=bagea_result$Eu_omega_list[[1]]
 		nu1=bagea_result$Eu_nu_list[[1]]
+		params=list(omega1=omega1,nu1=nu1)
+	}
+	get_results_obs_params=function(observed_data){
+		omega1=as.matrix(observed_data$simulation_unobs_list$omega)             
+		nu1=as.matrix(my_observed_data$simulation_unobs_list$nu)
 		params=list(omega1=omega1,nu1=nu1)
 	}
 	get_obs_params=function(obs_list){
@@ -200,7 +212,11 @@ predict_directed_fast=function(observed_data,bagea_result){
 	calc_S_approx=function(eta,Sigma,n){
 		(t(eta)%*%Sigma%*%eta)
 	}
-	fitted_params=get_results_params(bagea_result)
+	if(use_simulated){
+		fitted_params=get_results_obs_params(observed_data)
+	}else{
+		fitted_params=get_results_params(bagea_result)
+	}
 	myKEEP_X_y=observed_data$settings$KEEP_X_y
 	only_approx=FALSE
 	if(is.null(myKEEP_X_y) || myKEEP_X_y!=TRUE){
