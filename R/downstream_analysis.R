@@ -184,7 +184,7 @@ predict_directed_fast=function(observed_data,bagea_result,use_simulated=FALSE){
 	}
 	get_results_obs_params=function(observed_data){
 		omega1=as.matrix(observed_data$simulation_unobs_list$omega)             
-		nu1=as.matrix(my_observed_data$simulation_unobs_list$nu)
+		nu1=as.matrix(observed_data$simulation_unobs_list$nu)
 		params=list(omega1=omega1,nu1=nu1)
 	}
 	get_obs_params=function(obs_list){
