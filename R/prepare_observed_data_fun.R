@@ -358,6 +358,13 @@ add_annotation_shift_params=function(hyperparameter_list,annotation_shift_names,
 		omega=rnorm(mys,0,1)
 		omega=omega/sqrt(res)
 	}
+	if(!is.null(hyperparameter_list[["preset_omega"]])){
+		print("presetting omega..")
+		if(length(hyperparameter_list[["preset_omega"]])!=length(omega)){
+			stop("Trying to preset omega. Does not have a right length.")
+		}
+		omega=hyperparameter_list[["preset_omega"]]
+	}
 	hyperparameter_list$omega=omega
 	return(hyperparameter_list)
 }
@@ -379,6 +386,16 @@ add_annotation_nu_params=function(hyperparameter_list,annotation_nu_names){
 	nu_noshift=rnorm(mys,0,1)
 	nu=(nu_noshift/sqrt(hyperparameter_list$p)+hyperparameter_list$c)
 	names(nu)=annotation_nu_names
+	if(!is.null(hyperparameter_list[["preset_nu"]])){
+		print("presetting nu..")
+		if(length(hyperparameter_list[["preset_nu"]])!=length(nu)){
+			stop("Trying to preset nu. Does not have a right length.")
+		}
+		if(sum(names(hyperparameter_list[["preset_nu"]])!=annotation_nu_names)!=0){
+			stop("Trying to preset nu. Names are incorrect.")
+		}
+		nu=hyperparameter_list[["preset_nu"]]		
+	}
 	hyperparameter_list$nu=nu
 	return(hyperparameter_list)
 }
@@ -1148,6 +1165,9 @@ prepare_observed_data=function(BAGEA_ANNOTATION_MAT=NULL,ANNOTATION_LIST=colname
 	###########################
 	if(do_simulation(HYPER_PARAM_LIST)){
 		simulated_params=simulate_params_from_hyperparams(HYPER_PARAM_LIST,D_mat,ANNOTATION_LIST,ANNOTATION_SHIFT_LIST,ANNOTATION_SHIFTWEIGHT_LIST)
+		if(!is.null(HYPER_PARAM_LIST$seed_val)){
+			set.seed(HYPER_PARAM_LIST$seed_val)
+		}
 	}else{
 		simulated_params=NULL
 	}
