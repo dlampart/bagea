@@ -323,7 +323,7 @@ set_hyperparameter_list=function(nu_names=NULL,myc=NULL,gamma1=3,tau1=2,phi1=3,p
 	class(hyperparameter_list)=c("bagea_hyperparameter_list",class(hyperparameter_list))
 	return(hyperparameter_list)
 }
-
+#1111
 add_annotation_params=function(hyperparameter_list,annotation_names){
 	if(sum(class(hyperparameter_list)=="bagea_hyperparameter_list")==0){
 		stop("hyperparameter_list argument is not a bagea_hyperparameter_list object.")
@@ -335,6 +335,17 @@ add_annotation_params=function(hyperparameter_list,annotation_names){
 	tt=rgamma(myt,hyperparameter_list$phi1,hyperparameter_list$phi2)
 	names(tt)=annotation_names
 	hyperparameter_list$as=tt
+	if(!is.null(hyperparameter_list[["preset_as"]])){
+		print("presetting as..")
+		if(length(hyperparameter_list[["preset_as"]])!=length(tt)){
+			stop("Trying to preset as. Does not have a right length.")
+		}
+		if(sum(names(hyperparameter_list[["preset_as"]])!=annotation_names)!=0){
+			stop("Trying to preset as. Names are incorrect.")
+		}
+		as=hyperparameter_list[["preset_as"]]		
+	}
+	hyperparameter_list$as=as
 	return(hyperparameter_list)
 }
 
