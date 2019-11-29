@@ -1174,10 +1174,10 @@ prepare_observed_data=function(BAGEA_ANNOTATION_MAT=NULL,ANNOTATION_LIST=colname
 	# END prepare D_mat from SHIFT_METAINFO_TBL
 	###########################
 	if(do_simulation(HYPER_PARAM_LIST)){
-		simulated_params=simulate_params_from_hyperparams(HYPER_PARAM_LIST,D_mat,ANNOTATION_LIST,ANNOTATION_SHIFT_LIST,ANNOTATION_SHIFTWEIGHT_LIST)
 		if(!is.null(HYPER_PARAM_LIST$seed_val)){
 			set.seed(HYPER_PARAM_LIST$seed_val)
 		}
+		simulated_params=simulate_params_from_hyperparams(HYPER_PARAM_LIST,D_mat,ANNOTATION_LIST,ANNOTATION_SHIFT_LIST,ANNOTATION_SHIFTWEIGHT_LIST)		
 	}else{
 		simulated_params=NULL
 	}
