@@ -332,20 +332,19 @@ add_annotation_params=function(hyperparameter_list,annotation_names){
 		stop("annotation_names argument is not a character vector")
 	}
 	myt=length(annotation_names)
-	tt=rgamma(myt,hyperparameter_list$phi1,hyperparameter_list$phi2)
-	names(tt)=annotation_names
-	hyperparameter_list$as=tt
+	as=rgamma(myt,hyperparameter_list$phi1,hyperparameter_list$phi2)
+	names(as)=annotation_names
+	hyperparameter_list$as=as
 	if(!is.null(hyperparameter_list[["preset_as"]])){
 		print("presetting as..")
-		if(length(hyperparameter_list[["preset_as"]])!=length(tt)){
+		if(length(hyperparameter_list[["preset_as"]])!=length(as)){
 			stop("Trying to preset as. Does not have a right length.")
 		}
 		if(sum(names(hyperparameter_list[["preset_as"]])!=annotation_names)!=0){
 			stop("Trying to preset as. Names are incorrect.")
 		}
-		as=hyperparameter_list[["preset_as"]]		
+		hyperparameter_list$as=hyperparameter_list[["preset_as"]]		
 	}
-	hyperparameter_list$as=as
 	return(hyperparameter_list)
 }
 
