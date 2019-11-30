@@ -3,11 +3,19 @@
 # install relevant R packages.
 #########################################################
 #########################################################
-install.packages("devtools")
+## Step 1: Start R and install relevant packages.  
+# BAGEA is tested with the following package and versions:
+#   Rcpp: 1.0.1
+#   roxygen2: 6.1.1
+#   data.table: 1.12.0
+#   pryr: 0.1.4
+##
+install.packages('https://cran.r-project.org/src/contrib/Archive/devtools/devtools_2.0.2.tar.gz', repos=NULL, type='source')
 install.packages("Rcpp")
 install.packages("roxygen2")
 install.packages("data.table")
 install.packages("pryr")
+# Optionally, you can check version information by packageVersion('PACKAGENAME')
 #########################################################
 #########################################################
 # END: install relevant R packages.
