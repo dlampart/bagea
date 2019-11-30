@@ -1175,6 +1175,9 @@ prepare_observed_data=function(BAGEA_ANNOTATION_MAT=NULL,ANNOTATION_LIST=colname
 	###########################
 	if(do_simulation(HYPER_PARAM_LIST)){
 		if(!is.null(HYPER_PARAM_LIST$seed_val)){
+			if(NCORES!=1){
+				stop("when seeding only one core is allowed.")
+			}
 			set.seed(HYPER_PARAM_LIST$seed_val)
 		}
 		simulated_params=simulate_params_from_hyperparams(HYPER_PARAM_LIST,D_mat,ANNOTATION_LIST,ANNOTATION_SHIFT_LIST,ANNOTATION_SHIFTWEIGHT_LIST)		
