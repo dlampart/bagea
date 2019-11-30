@@ -101,6 +101,7 @@ install_external_data=function(proceed_savely=TRUE,download_processed=TRUE,delet
 	PREPARE_SNPS_IN_ANNOTATIONS=TRUE
 	PREPARE_TSS_FILES=TRUE
 	PREPARE_TSS_BED=TRUE
+	PREPARE_DIRECTED_ANNOT=TRUE
 	PREPARE_LDBLOCK_DATA=FALSE
 	INSTALL_EXTERNAL_TOOLS=TRUE
 #	INSTALL_EXTERNAL_TOOLS=FALSE
@@ -239,6 +240,24 @@ install_external_data=function(proceed_savely=TRUE,download_processed=TRUE,delet
 			system("rm Data/common_snps_hg19.bed")
 			if(delete_raw_downloads){		
 				system("rm Data/snp147Common.txt.gz")
+			}
+		}
+	}
+
+	if(PREPARE_DIRECTED_ANNOT){
+		print("pull directed annotations ..")
+		if(!download_processed){
+			print("directed annotations only installed if flag 'download_processed' is TRUE")
+		}else{
+			print("trying donwloading directed annotations from s3 ..")
+			print("checking connection ..")
+			checkping=system("which ping")
+			for(chr in c(1:22)){
+				print(paste("get chr",chr))
+				cur_download_filepath=paste("/bagea-data/bagea_data_freeze/directed_annotations/expecto_loading_normed_chr",chr,".RData",sep="")
+				cur_output_filepath=paste("Data/expecto_loading_normed_chr",chr,".RData",sep="")
+				mycmd=get_s3_download_cmdstr(filepath=cur_download_filepath,outpath=cur_output_filepath)
+				system(mycmd)
 			}
 		}
 	}
