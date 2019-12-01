@@ -9,8 +9,10 @@
 #   roxygen2: 6.1.1
 #   data.table: 1.12.0
 #   pryr: 0.1.4
-##
-install.packages('https://cran.r-project.org/src/contrib/Archive/devtools/devtools_2.0.2.tar.gz', repos=NULL, type='source')
+# 	devtools 2.0.2
+#	usethis 1.5.1
+install.packages("devtools")
+install.packages("usethis")
 install.packages("Rcpp")
 install.packages("roxygen2")
 install.packages("data.table")
@@ -28,7 +30,7 @@ install.packages("pryr")
 ## make sure that your working directory is the bagea packag path
 #########################################################
 #########################################################
-devtools::use_rcpp()
+usethis::use_rcpp()
 dummy=tryCatch({devtools::document()},
 	error=function(e){return(FALSE)}
 )
