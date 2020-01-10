@@ -20,6 +20,13 @@ An a full example can be found at.
 4)  Run BAGEA
 5)  calculate MSE_dir from the results.
 
+While the above example is scaled such that it quickly runs on a laptop, another example to be run on with a higher number of cores can be found at:
+
+	`bagea_directed_annotation_example.R`
+
+It assumes that relevant GTEx data has been installed. This should be case if the toy-example was run beforehand. It will run bagea for GTEx data using 690 directed TF annotated Expecto annotations in Lasso mode.
+
+
 To get additional information of bagea functions please consult their help page e.g.:
 
 `help(run_bagea)`

@@ -26,6 +26,23 @@ get_download_cmdstr=function(filepath="/bagea-data/bagea_data_freeze/annotation_
 }
 
 
+get_metaannotation_filepath=function(){
+	BAGEA_PATH=Sys.getenv("BAGEA_PATH")
+	annotation_filepath=paste(BAGEA_PATH,"/Data/DirectedAnnotations/metaAnnotations.txt",sep="")
+	return(annotation_filepath)
+}
+
+
+#' load metaannotation table
+#' 
+#' @export
+load_metaannotation_tbl=function(){
+	filepath=get_metaannotation_filepath()
+	aa=data.table::fread(filepath)
+	return(aa)
+}
+
+
 get_pickrell_ldblocks_filepath=function(){
 	BAGEA_PATH=Sys.getenv("BAGEA_PATH")
 	commonsnp_filepath=paste(BAGEA_PATH,"/Data/pickrell_ldblocks.hg19.eur.sorted.bed",sep="")
@@ -201,6 +218,13 @@ install_external_data=function(proceed_savely=TRUE,download_processed=TRUE,delet
 			if(a!=0){
 				my_stop(calling_path,"couldn't make Data folder")
 			}
+		}		
+		if(sum(files=="Data/DirectedAnnotations")==0){
+			print(paste("make folder Data/DirectedAnnotations at" ,getwd()))
+			a=system("mkdir Data/DirectedAnnotations")
+			if(a!=0){
+				my_stop(calling_path,"couldn't make Data/DirectedAnnotations folder")
+			}
 		}
 	}
 	################################################
@@ -319,11 +343,25 @@ install_external_data=function(proceed_savely=TRUE,download_processed=TRUE,delet
 			mytbl[,blocknr:=paste("block",c(1:dim(mytbl)[1]),sep="")]
 			write.table(mytbl,file="Data/pickrell_ldblocks.hg19.eur.sorted.bed",row.names=FALSE,col.names=FALSE,sep="\t",quote=FALSE)
 			system("rm Data/pickrell_ldblocks.hg19.eur.bed")
-		}
+		}		
 		if(a!=0){
 			my_stop(calling_path,"problem in sort-bed when sorting tss file")
 		}
-
+	}
+	if(PREPARE_DIRECTED_ANNOT){
+		if(download_processed){
+			print("trying to get preprocessed directed annotations..")
+			for(k in c(1:22)){
+				loadpath=paste("/bagea-data/bagea_data_freeze/directed_annotations/expecto_loading_normed_chr",k,".RData",sep="")
+				outpath=paste("Data/DirectedAnnotations/expecto_loading_normed_chr",k,".RData",sep="")
+				mycmd=get_s3_download_cmdstr(filepath=loadpath,outpath=outpath)
+				system(mycmd)
+			}
+			mycmd=get_s3_download_cmdstr(filepath="/bagea-data/bagea_data_freeze/directed_annotations/metaAnnotations.txt",get_metaannotation_filepath())
+			system(mycmd)
+		}else{
+			print("preprocessed directed annotations not downloaded because download_processed is set to FALSE.")
+		}
 	}
 	print("changing directory back.")
 	setwd(calling_path)
