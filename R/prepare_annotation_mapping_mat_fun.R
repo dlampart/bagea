@@ -60,7 +60,8 @@ prepare_annotation_mapping_mat=function(RANGE_AROUND_TSS=150000,TSS_CUTOFFS=c(25
 	if(PREPARE_SHIFT_MAT==TRUE){
 		shift_bed_counter=(!is.null(SHIFT_BED_FILES_PATHS))+(!is.null(SHIFT_BED_FILES))
 		if(is.null(SHIFT_RDATA_FILES_PATH_CHR22) & shift_bed_counter==0){
-		stop("PREPARE_SHIFT_MAT TRUE but neither SHIFT_RDATA_FILES_PATH_CHR22 nor SHIFT_BED_FILES_PATHS supplied.")
+			SHIFT_RDATA_FILES_PATH_CHR22=paste(BAGEA_PATH,"/Data/DirectedAnnotations/expecto_loading_normed_chr22.RData",sep="")
+			print(paste("PREPARE_SHIFT_MAT is set TRUE  but no bed files or shift annotation matrices given. Trying to use the default path ",SHIFT_RDATA_FILES_PATH_CHR22))
 		}
 		if(!is.null(SHIFT_BED_FILES_PATHS) && (!is.scalar(SHIFT_BED_FILES_PATHS) || !is.character(SHIFT_BED_FILES_PATHS))){
 				stop("SHIFT_BED_FILES_PATHS argument not NULL or a single character string")

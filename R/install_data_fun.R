@@ -279,7 +279,7 @@ install_external_data=function(proceed_savely=TRUE,download_processed=TRUE,delet
 			for(chr in c(1:22)){
 				print(paste("get chr",chr))
 				cur_download_filepath=paste("/bagea-data/bagea_data_freeze/directed_annotations/expecto_loading_normed_chr",chr,".RData",sep="")
-				cur_output_filepath=paste("Data/expecto_loading_normed_chr",chr,".RData",sep="")
+				cur_output_filepath=paste("Data/DirectedAnnotations/expecto_loading_normed_chr",chr,".RData",sep="")
 				mycmd=get_s3_download_cmdstr(filepath=cur_download_filepath,outpath=cur_output_filepath)
 				system(mycmd)
 			}
