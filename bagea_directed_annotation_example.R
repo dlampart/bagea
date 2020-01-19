@@ -30,9 +30,9 @@ if(SAVE_PATH==""){
 }
 
 BAGEA_PATH=Sys.getenv("BAGEA_PATH")
-directed_annotationRdata=paste(BAGEA_PATH,"Data/DirectedAnnotations/expecto_loading_normed_chr22.RData",sep="")
 
-my_annotation_mapping=prepare_annotation_mapping_mat(RANGE_AROUND_TSS = 2E5, TSS_CUTOFFS = c(250, 500, 1000, 2000, 5000, 10000, 20000,50000),SHIFT_RDATA_FILES_PATH_CHR22=directed_annotationRdata)
+
+my_annotation_mapping=prepare_annotation_mapping_mat(RANGE_AROUND_TSS = 2E5, TSS_CUTOFFS = c(250, 500, 1000, 2000, 5000, 10000, 20000,50000))
 
 ########################################################
 ## Next, we load the met-annotations and restrict the 
